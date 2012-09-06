@@ -1,6 +1,9 @@
 package comgithubweibominingdataIMSever;
 
 public class SeverControl {
+	
+	protected SeverModel model;
+	protected SeverView view;
 
 	public SeverControl() {
 		// TODO Auto-generated constructor stub

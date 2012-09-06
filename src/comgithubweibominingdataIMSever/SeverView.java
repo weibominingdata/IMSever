@@ -12,12 +12,18 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 
 public class SeverView extends JFrame {
+	
+	protected SeverModel model;
+	protected SeverControl control;
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	protected JTextArea textAreaUsrs;
+	protected JTextArea textLogs;
+
 
 	/**
 	 * Launch the application.
@@ -57,7 +63,7 @@ public class SeverView extends JFrame {
 		scrollPane.setBounds(6, 22, 146, 544);
 		panel.add(scrollPane);
 		
-		JTextArea textAreaUsrs = new JTextArea();
+		textAreaUsrs = new JTextArea();
 		textAreaUsrs.setEditable(false);
 		scrollPane.setViewportView(textAreaUsrs);
 		
@@ -71,7 +77,7 @@ public class SeverView extends JFrame {
 		scrollPane_1.setBounds(6, 22, 281, 544);
 		panel_1.add(scrollPane_1);
 		
-		JTextArea textLogs = new JTextArea();
+		textLogs = new JTextArea();
 		textLogs.setLineWrap(true);
 		textLogs.setEditable(false);
 		scrollPane_1.setViewportView(textLogs);
