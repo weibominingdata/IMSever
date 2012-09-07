@@ -17,7 +17,7 @@ public class SeverStarter extends RmiStarter {
 		// TODO Auto-generated method stub
         try {
             Sever s = new Sever();
-            SeverModelRMI modelRMIStub = (SeverModelRMI)UnicastRemoteObject.exportObject(s.mRMI, 0);
+            SeverRMI modelRMIStub = (SeverRMI)UnicastRemoteObject.exportObject(s.mRMI, 0);
 
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(SeverRMI.SERVICE_NAME, modelRMIStub);

@@ -1,6 +1,7 @@
 package comgithubweibominingdataIMSever;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 public class UsrsGenerator {
@@ -52,7 +53,7 @@ public class UsrsGenerator {
 		usedID.set(id, Boolean.FALSE);
 	}
 	
-	protected int getUsrNameAndID(String n) {
+	protected int getUsrNameAndID(List<String> n) {
 		int i = 0;
 		for(;i<26;++i){
 			if (usedID.get(i)==Boolean.FALSE){
@@ -63,7 +64,9 @@ public class UsrsGenerator {
 			return -1;
 		}
 		else {
-			n = name.get(i);
+			n.add(name.get(i));
+			usedID.set(i, Boolean.TRUE);
+			System.err.println(n.get(0)+"At getUsrNameAndID");			
 			return i;
 		}
 	}

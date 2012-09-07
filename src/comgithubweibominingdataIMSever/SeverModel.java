@@ -1,6 +1,7 @@
 package comgithubweibominingdataIMSever;
 
 import java.util.Enumeration;
+import java.util.Vector;
 
 import comgithubweibominingdataIMClient.ChattingHistory;
 import comgithubweibominingdataIMClient.UsersManager;
@@ -16,7 +17,7 @@ public class SeverModel {
 	protected UsersManager m = new UsersManager();
 	protected ChattingHistory h = new ChattingHistory();
 	protected UsrsGenerator ug = new UsrsGenerator();
-	protected String topic;
+	protected String topic = new String();
 
 	public SeverModel() {
 		// TODO Auto-generated constructor stub
@@ -31,31 +32,43 @@ public class SeverModel {
 	}
 	
 	protected boolean generateAUsr(Usr u) {
-		u = new Usr();
-		String n = new String();
+		Vector<String> n = new Vector<String>();
 		int id = ug.getUsrNameAndID(n);
 		if (id == -1) {
 			return false;
 		}
 		else {
 			u.setUsrID(id);
-			u.setUsrName(n);
+			u.setUsrName(n.get(0));
 			u.setUsrStatus(UsrStatus.Available);
 			u.setUsrEditingStatus(UsrEditingStatus.NotEntered);
+            boolean added = false;
 			for(int i = 0; i < m.usrList.size(); ++i) {
 				if (m.usrList.get(i).getUsrID()>id){
 					m.usrList.add(i, u);
-					break;
-				}
+					added = true;
+					break;					}
+			}
+			if (!added) {
+				// it means it should be added to the end of the list
+				m.usrList.add(u);
 			}
 			this.h.addAChat(n+" joins the chatting");
+			updateView();
 			return true;
 		}
 	}
 	
 	protected void usrLeaves(Usr u) {
 		ug.removeAUsr(u.getUsrID());
-		this.h.addAChat(u.getUsrName() + " leaves the chatting");
+		this.h.addAChat("[" + u.getUsrName() + "]" + " leaves the chatting");
+		for(int i = 0; i < this.m.usrList.size(); ++i) {
+			if (this.m.usrList.get(i).getUsrID() == u.getUsrID()) {
+				this.m.usrList.remove(i);
+				break;
+			}
+		}
+		updateView();
 	}
 	
 	protected void updateView(){

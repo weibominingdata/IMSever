@@ -1,9 +1,9 @@
 package comgithubweibominingdataIMSever;
 
 import java.rmi.RemoteException;
+import java.util.Vector;
 
 import comgithubweibominingdataIMClient.ChattingHistory;
-import comgithubweibominingdataIMClient.UsersManager;
 import comgithubweibominingdataIMClient.Usr;
 
 public class SeverModelRMI implements SeverRMI {
@@ -24,17 +24,19 @@ public class SeverModelRMI implements SeverRMI {
 	}
 
 	@Override
-	public synchronized boolean usrRegister(Usr u) throws RemoteException {
+	public Usr usrRegister() throws RemoteException {
 		// TODO Auto-generated method stub
-		boolean successful = m.generateAUsr(u);
+		Usr t = new Usr();
+		boolean successful = m.generateAUsr(t);
 		if (successful){
+			System.out.println(this.m.m.usrList.size());
 			this.m.updateView();
 		}
-		return successful;
+		return t;
 	}
 
 	@Override
-	public synchronized void usrUpdateStatus(Usr u) throws RemoteException {
+	public void usrUpdateStatus(Usr u) throws RemoteException {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < m.m.usrList.size(); ++i) {
 			if (u.getUsrID() == m.m.usrList.get(i).getUsrID()) {
@@ -46,12 +48,12 @@ public class SeverModelRMI implements SeverRMI {
 	}
 
 	@Override
-	public synchronized void usrUpdateMessage(Usr u, String msg) throws RemoteException {
+	public void usrUpdateMessage(Usr u, String msg) throws RemoteException {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < m.m.usrList.size(); ++i) {
 			if (u.getUsrID() == m.m.usrList.get(i).getUsrID()) {
 				// this usr exists
-				String msgTobeStored = u.getUsrName() + "Says :" + msg;
+				String msgTobeStored = "["+u.getUsrName() + " Says: ]" + msg;
 				m.h.addAChat(msgTobeStored);
 			}
 		}
@@ -61,7 +63,7 @@ public class SeverModelRMI implements SeverRMI {
 	}
 
 	@Override
-	public synchronized void usrUpdateEditingStatus(Usr u) throws RemoteException {
+	public void usrUpdateEditingStatus(Usr u) throws RemoteException {
 		// TODO Auto-generated method stub
 		for(int i = 0; i < m.m.usrList.size(); ++i) {
 			if (u.getUsrID() == m.m.usrList.get(i).getUsrID()) {
@@ -72,24 +74,34 @@ public class SeverModelRMI implements SeverRMI {
 	}
 
 	@Override
-	public synchronized void usrUpdateTopic(String topic) throws RemoteException {
+	public void usrUpdateTopic(String topic) throws RemoteException {
 		// TODO Auto-generated method stub
 		m.topic = topic;
 	}
 
+
 	@Override
-	public synchronized void usrRetriveInfor(UsersManager m, ChattingHistory h, String topic)
-			throws RemoteException {
+	public void usrLeaves(Usr u) throws RemoteException {
 		// TODO Auto-generated method stub
-		m = this.m.m;
-		h = this.m.h;
-		topic = this.m.topic;
+		this.m.usrLeaves(u);	
 	}
 
 	@Override
-	public synchronized void usrLeaves(Usr u) throws RemoteException {
+	public Vector<Usr> usrRetriveUsersList() throws RemoteException {
 		// TODO Auto-generated method stub
-		this.m.usrLeaves(u);	
+		return m.m.usrList;
+	}
+
+	@Override
+	public ChattingHistory usrRetriveChattingHistory() throws RemoteException {
+		// TODO Auto-generated method stub
+		return m.h;
+	}
+
+	@Override
+	public String usrRetriveTopic() throws RemoteException {
+		// TODO Auto-generated method stub
+		return m.topic;
 	}
 
 }
